@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harmony_clin/pages/login_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,18 +27,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Harmony Clin',
-      theme: ThemeData(
-        primarySwatch: NavBarBase,
-        scaffoldBackgroundColor: const Color(0xfff1e5e3)
-      ),
-      home: MyHomePage(title: 'Harmony Clin'),
-    );
+        title: 'Harmony Clin',
+        theme: ThemeData(
+            primarySwatch: NavBarBase,
+            scaffoldBackgroundColor: const Color(0xfff1e5e3)),
+        home: MyHomePage(
+          title: 'Harmony Clin',
+        ));
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title,}) : super(key: key);
+  MyHomePage({
+    Key key,
+    this.title,
+  }) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -80,6 +84,28 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        elevation: 0,
+        backgroundColor: NavBarBase,
+        leading: ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: 44,
+            minHeight: 44,
+            maxWidth: 64,
+            maxHeight: 64,
+          ),
+          child: Image.asset('logos/icone_appbar.png', fit: BoxFit.fitHeight),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.login),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+              );
+            },
+          )
+        ],
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
