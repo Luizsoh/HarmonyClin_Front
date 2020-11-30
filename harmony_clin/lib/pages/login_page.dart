@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:harmony_clin/utilities/constants.dart';
+import 'package:harmony_clin/apis/login_api.dart';
+
+import 'package:harmony_clin/utilities/alert.dart';
 
 const MaterialColor NavBarBase = MaterialColor(
   corBaseNavegacao,
@@ -201,7 +203,7 @@ class LoginPage extends StatelessWidget {
     return null;
   }
 
-  void _clickButton(BuildContext context) {
+  Future<void> _clickButton(BuildContext context) async {
     bool formOk = _formKey.currentState.validate();
     if (!formOk) {
       return null;
@@ -211,5 +213,22 @@ class LoginPage extends StatelessWidget {
     String senha = _crtlSenha.text;
 
     print("login: $login senha: $senha");
+
+    var token = await LoginApi.login(login, senha);
+
+    if (token != null) {
+      print("$token");
+      _navegaHomepage(context);
+    } else {
+      alert(context, "Login Inválido", "Login");
+    }
+  }
+
+  _navegaHomepage(BuildContext context) {
+    Navigator.pop(context);
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => MyApp()),
+    // );
   }
 }
