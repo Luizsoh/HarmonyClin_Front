@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:harmony_clin/pages/login_page.dart';
+import 'package:harmony_clin/apis/imagens_api.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:harmony_clin/classes/imagem.dart';
+import 'dart:async';
 
 void main() {
   runApp(MyApp());
@@ -73,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Future<Widget> carousel = _buildCarousel();
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -108,40 +113,65 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: new FutureBuilder<Widget>(
+        future: carousel,
+        initialData: Text("Carregando ...."),
+        builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+          if (snapshot.hasData) {
+            debugPrint('valor retornado: ${snapshot.data}');
+            return new Container(
+              padding: EdgeInsets.symmetric(vertical: 25.0),
+              width: double.infinity,
+              child: snapshot.data,
+            );
+          } else {
+            return new CircularProgressIndicator();
+          }
+        },
+      )),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  Future<Widget> _buildCarousel() async {
+    var imagens = await ImagensApi.listar();
+    print('Aqui caiu');
+    return CarouselSlider(
+      options: CarouselOptions(
+          height: 400,
+          aspectRatio: 16 / 9,
+          viewportFraction: 0.8,
+          initialPage: 0,
+          enableInfiniteScroll: true,
+          reverse: false,
+          autoPlay: true,
+          autoPlayInterval: Duration(seconds: 3),
+          autoPlayAnimationDuration: Duration(milliseconds: 800),
+          autoPlayCurve: Curves.fastOutSlowIn,
+          enlargeCenterPage: true,
+          scrollDirection: Axis.horizontal),
+      items: <Widget>[
+        for (var i = 0; i < imagens.length; i++)
+          Container(
+            margin: const EdgeInsets.only(top: 20.0, left: 20.0),
+            // child: Image.network(imagens[i].filePath),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(imagens[i].filePath),
+                fit: BoxFit.fitHeight,
+              ),
+              // border:
+              //     Border.all(color: Theme.of(context).accentColor),
+              borderRadius: BorderRadius.circular(32.0),
+            ),
+          ),
+      ],
     );
   }
 }

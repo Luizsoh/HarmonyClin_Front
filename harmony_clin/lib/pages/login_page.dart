@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harmony_clin/utilities/constants.dart';
 import 'package:harmony_clin/apis/login_api.dart';
-
 import 'package:harmony_clin/utilities/alert.dart';
 
 const MaterialColor NavBarBase = MaterialColor(
