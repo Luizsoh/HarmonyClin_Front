@@ -4,7 +4,7 @@ import 'package:harmony_clin/Classes/imagem.dart';
 
 class ImagensApi {
   static Future<List<Imagem>> listar() async {
-    var url = 'https://localhost:44335/api/Imagem/ListarImagens';
+    var url = 'https://192.168.100.11:44307/api/Imagem/ListarImagens';
 
     var header = {"Content-Type": "application/json"};
 

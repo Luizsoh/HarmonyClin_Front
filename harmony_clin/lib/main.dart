@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:harmony_clin/pages/login_page.dart';
 import 'package:harmony_clin/apis/imagens_api.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:harmony_clin/classes/imagem.dart';
 import 'dart:async';
 
 void main() {
@@ -31,12 +30,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Harmony Clin',
+        title: 'Harmony Clin teste',
         theme: ThemeData(
             primarySwatch: NavBarBase,
             scaffoldBackgroundColor: const Color(0xfff1e5e3)),
         home: MyHomePage(
-          title: 'Harmony Clin',
+          title: 'Harmony Clin tese',
         ));
   }
 }
@@ -78,16 +77,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     Future<Widget> carousel = _buildCarousel();
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
         elevation: 0,
         backgroundColor: NavBarBase,
@@ -113,8 +105,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
           child: new FutureBuilder<Widget>(
         future: carousel,
         initialData: Text("Carregando ...."),
@@ -141,7 +131,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<Widget> _buildCarousel() async {
     var imagens = await ImagensApi.listar();
-    print('Aqui caiu');
     return CarouselSlider(
       options: CarouselOptions(
           height: 400,
@@ -160,14 +149,11 @@ class _MyHomePageState extends State<MyHomePage> {
         for (var i = 0; i < imagens.length; i++)
           Container(
             margin: const EdgeInsets.only(top: 20.0, left: 20.0),
-            // child: Image.network(imagens[i].filePath),
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(imagens[i].filePath),
                 fit: BoxFit.fitHeight,
               ),
-              // border:
-              //     Border.all(color: Theme.of(context).accentColor),
               borderRadius: BorderRadius.circular(32.0),
             ),
           ),
